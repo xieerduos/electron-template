@@ -9,19 +9,19 @@ yarn install
 ### Compiles and hot-reloads for development
 
 ```
-yarn serve
+npm start
 ```
 
 ### Compiles and minifies for production
 
 ```
-yarn build
+npm run electron:build
 ```
 
 ### Lints and fixes files
 
 ```
-yarn lint
+npm run lint
 ```
 
 ### Customize configuration
