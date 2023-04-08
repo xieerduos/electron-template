@@ -2,6 +2,8 @@
   "name": "electron-template",
   "version": "0.1.0",
   "private": true,
+  "author": "李钟意",
+  "description": "Electron template",
   "scripts": {
     "start": "npm run electron:serve",
     "serve": "vue-cli-service serve",
@@ -13,7 +15,8 @@
     "postuninstall": "electron-builder install-app-deps",
     "prepare": "husky install",
     "commit": "cz",
-    "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -w -r 0 --verbose"
+    "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -w -r 0 --verbose",
+    "logo": "electron-icon-builder --input=./public/logo.png --output=./public/"
   },
   "main": "background.js",
   "dependencies": {
@@ -37,6 +40,7 @@
     "conventional-changelog-cli": "^2.2.2",
     "electron": "^13.0.0",
     "electron-devtools-installer": "^3.1.0",
+    "electron-icon-builder": "^2.0.1",
     "eslint": "^8.37.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",

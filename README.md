@@ -42,6 +42,16 @@ Vue Cli https://cli.vuejs.org/config/
 
 vue-cli-plugin-electron-builder https://github.com/nklayman/vue-cli-plugin-electron-builder
 
+## 生成图标
+
+https://www.npmjs.com/package/electron-icon-builder
+
+把public/logo.png换成你自己的，运行下面命令
+
+```bash
+npm run logo
+```
+
 ## 常见错误
 
 ### error @achrinza/node-ipc@9.2.2
