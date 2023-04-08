@@ -53,3 +53,22 @@ yarn --ignore-engines
 ```
 
 https://blog.csdn.net/qq_42475499/article/details/120890480
+
+### yarn 的时候报下面如下错误
+
+```bash
+hint: The '.husky/pre-commit' hook was ignored because it's not set as executable.
+hint: You can disable this warning with `git config advice.ignoredHook false`.
+hint: The '.husky/commit-msg' hook was ignored because it's not set as executable.
+hint: You can disable this warning with `git config advice.ignoredHook false`.
+```
+
+这个错误提示是因为 '.husky/pre-commit' 和 '.husky/commit-msg' 钩子没有设置为可执行权限。为了解决这个问题，您需要执行以下步骤：
+
+- 在终端中导航到包含 '.husky' 文件夹的项目根目录。
+- 运行以下命令，为这些钩子文件设置可执行权限：
+
+```bash
+chmod +x .husky/pre-commit
+chmod +x .husky/commit-msg
+```
