@@ -76,6 +76,9 @@ module.exports = defineConfig({
           }
         }
       },
+      preload: {
+        mainWindow: 'src/main/preload/index.js'
+      },
       nodeIntegration: false,
       externals: ['ffi-napi', 'ref-napi'],
       mainProcessFile: 'src/main/background.js',

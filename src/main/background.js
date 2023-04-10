@@ -1,9 +1,12 @@
 'use strict';
 
-import {app, protocol, BrowserWindow} from 'electron';
+import {app, protocol, ipcMain, BrowserWindow} from 'electron';
 import {createProtocol} from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, {VUEJS3_DEVTOOLS} from 'electron-devtools-installer';
 import path from 'path';
+import {handleSetTitle} from '@/main/utils/setTitle.js';
+import {handleFileOpen} from '@/main/utils/openDialog.js';
+import * as counter from '@/main/counter/index.js';
 
 const sdk = require('@/main/sdk/index.js');
 
@@ -12,15 +15,18 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: {secure: true, standard: true}}]);
 
+let mainWindow;
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     autoHideMenuBar: true, // 自动隐藏菜单
     // eslint-disable-next-line no-undef
     icon: path.join(__static, 'icons/win/icon.ico'),
     webPreferences: {
+      // eslint-disable-next-line no-undef
+      preload: path.join(__dirname, 'mainWindow.js'),
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
@@ -30,12 +36,12 @@ async function createWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
+    await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
   } else {
     createProtocol('app');
     // Load the index.html when not in development
-    win.loadURL('app://./index.html');
+    mainWindow.loadURL('app://./index.html');
   }
 }
 
@@ -70,9 +76,11 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString());
     }
   }
-
+  ipcMain.on('set-title', handleSetTitle);
+  ipcMain.handle('dialog:openFile', handleFileOpen);
   createWindow();
   sdk.initialize();
+  counter.initialize(mainWindow);
 });
 
 // Exit cleanly on request from parent process in development mode.

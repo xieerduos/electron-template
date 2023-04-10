@@ -1,6 +1,6 @@
 const ffi = require('ffi-napi');
 const path = require('path');
-const log = require('@/main/logs/index.js');
+const log = require('@/main/log/index.js');
 
 module.exports = function useSdk() {
   try {
