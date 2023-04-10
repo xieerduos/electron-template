@@ -98,3 +98,9 @@ hint: You can disable this warning with `git config advice.ignoredHook false`.
 chmod +x .husky/pre-commit
 chmod +x .husky/commit-msg
 ```
+
+## License
+
+Copyright (c) 李钟意.
+
+Licensed under the [MIT](LICENSE.txt) license.
