@@ -12,6 +12,11 @@ module.exports = defineConfig({
       entry: 'src/renderer/index/main.js',
       template: 'public/index.html',
       filename: 'index.html'
+    },
+    settings: {
+      entry: 'src/renderer/settings/main.js',
+      template: 'public/settings.html',
+      filename: 'settings.html'
     }
   },
   transpileDependencies: true,
@@ -77,7 +82,8 @@ module.exports = defineConfig({
         }
       },
       preload: {
-        mainWindow: 'src/main/preload/index.js'
+        mainWindow: 'src/main/preload/index.js',
+        settingsWindow: 'src/main/preload/settings.js'
       },
       nodeIntegration: false,
       externals: ['ffi-napi', 'ref-napi'],

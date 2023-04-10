@@ -8,9 +8,6 @@ import {handleSetTitle} from '@/main/utils/setTitle.js';
 import {handleFileOpen} from '@/main/utils/openDialog.js';
 import * as counter from '@/main/counter/index.js';
 
-const sdk = require('@/main/sdk/index.js');
-const tray = require('@/main/tray/index.js');
-
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Scheme must be registered before the app is ready
@@ -91,9 +88,13 @@ app.on('ready', async () => {
   ipcMain.on('set-title', handleSetTitle);
   ipcMain.handle('dialog:openFile', handleFileOpen);
   createWindow();
-  sdk.initialize();
   counter.initialize(mainWindow);
+  const sdk = require('@/main/sdk/index.js');
+  const tray = require('@/main/tray/index.js');
+  const settings = require('@/main/settings/index.js');
+  sdk.initialize();
   tray.initialize(mainWindow);
+  settings.initialize();
 });
 
 // Exit cleanly on request from parent process in development mode.

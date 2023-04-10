@@ -1,4 +1,4 @@
-const {app, Menu, Tray} = require('electron');
+const {app, Menu, Tray, ipcMain} = require('electron');
 const path = require('path');
 let tray = null;
 
@@ -11,6 +11,12 @@ function useTray(mainWindow) {
 
   const template = [
     // {label: '退出', role: 'quit'}
+    {
+      label: '设置',
+      click: () => {
+        ipcMain.emit('toMain_settings', null, {type: 'show'});
+      }
+    },
     {
       label: '退出',
       click: () => {
@@ -27,7 +33,8 @@ function useTray(mainWindow) {
   tray.setContextMenu(contextMenu);
   tray.on('click', () => {
     // 我们这里模拟桌面程序点击通知区图标实现打开关闭应用的功能
-    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+    mainWindow.show();
+    // mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
     // mainWindow.isVisible() ? mainWindow.setSkipTaskbar(false) : mainWindow.setSkipTaskbar(true);
   });
   return tray;
