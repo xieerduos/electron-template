@@ -1,8 +1,24 @@
 {
   "name": "electron-template",
   "version": "0.1.0",
-  "private": true,
-  "author": "李钟意",
+  "keywords": [
+    "electron",
+    "vue",
+    "template",
+    "desktop",
+    "app",
+    "javascript",
+    "webpack",
+    "babel",
+    "sass",
+    "boilerplate"
+  ],
+  "author": "李钟意<coder.zhongyi.li@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xieerduos/electron-template.git"
+  },
   "description": "Electron template",
   "scripts": {
     "start": "npm run electron:serve",
