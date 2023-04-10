@@ -58,6 +58,29 @@ npm run logo
 2. electron log
 3. dll 通信
 4. docs 文档
+5. 系统托盘
+
+## 日志
+
+```
+npm i electron-log  -S
+```
+
+## 调用 dll
+
+```bash
+npm i ffi-napi ref-napi -S
+```
+
+## docs 文档
+
+```
+npm i docsify-cli -g
+```
+
+```
+docsify init docs
+```
 
 ## 常见错误
 
