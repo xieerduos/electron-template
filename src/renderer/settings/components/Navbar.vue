@@ -48,7 +48,7 @@ function clickItem(current) {
 }
 .menu-item {
   padding: 8px 12px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
   cursor: pointer;
   color: #141414;
   font-size: 14px;
