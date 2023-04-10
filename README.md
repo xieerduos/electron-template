@@ -52,13 +52,6 @@ https://www.npmjs.com/package/electron-icon-builder
 npm run logo
 ```
 
-## 目标
-
-1. 进程之间通信 例子
-2. electron log
-3. dll 通信
-4. docs 文档
-
 ## 常见错误
 
 ### error @achrinza/node-ipc@9.2.2
