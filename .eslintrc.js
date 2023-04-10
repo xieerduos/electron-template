@@ -7,6 +7,9 @@ module.exports = {
   parserOptions: {
     parser: '@babel/eslint-parser'
   },
+  globals: {
+    __static: true
+  },
   rules: {
     // 指定规则
     'vue/no-parsing-error': [
