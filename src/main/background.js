@@ -9,6 +9,7 @@ import {handleFileOpen} from '@/main/utils/openDialog.js';
 import * as counter from '@/main/counter/index.js';
 
 const sdk = require('@/main/sdk/index.js');
+const tray = require('@/main/tray/index.js');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -32,6 +33,17 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
+  });
+
+  mainWindow.on('show', () => {
+    mainWindow.setSkipTaskbar(false);
+  });
+
+  mainWindow.on('close', (event) => {
+    // 关闭窗口 不退出应用
+    event.preventDefault();
+    mainWindow.hide();
+    mainWindow.setSkipTaskbar(true);
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -81,6 +93,7 @@ app.on('ready', async () => {
   createWindow();
   sdk.initialize();
   counter.initialize(mainWindow);
+  tray.initialize(mainWindow);
 });
 
 // Exit cleanly on request from parent process in development mode.
