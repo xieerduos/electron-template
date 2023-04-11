@@ -31,7 +31,7 @@
     "postuninstall": "electron-builder install-app-deps",
     "prepare": "husky install",
     "commit": "cz",
-    "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -w -r 0 --verbose",
+    "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -s 0.0.0 -r 0 -w",
     "logo": "electron-icon-builder --input=./public/logo.png --output=./public/"
   },
   "main": "background.js",
