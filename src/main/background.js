@@ -21,7 +21,7 @@ async function createWindow() {
     height: 600,
     autoHideMenuBar: true, // 自动隐藏菜单
     // eslint-disable-next-line no-undef
-    icon: path.join(__static, 'icons/win/icon.ico'),
+    icon: path.join(__static, `icons/${process.platform === 'win32' ? 'win/icon.ico' : 'png/16x16.png'}`),
     webPreferences: {
       // eslint-disable-next-line no-undef
       preload: path.join(__dirname, 'mainWindow.js'),
@@ -92,7 +92,10 @@ app.on('ready', async () => {
   const sdk = require('@/main/sdk/index.js');
   const tray = require('@/main/tray/index.js');
   const settings = require('@/main/settings/index.js');
-  sdk.initialize();
+
+  if (process.platform === 'win32') {
+    sdk.initialize();
+  }
   tray.initialize(mainWindow);
   settings.initialize();
 });
