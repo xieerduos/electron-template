@@ -7,10 +7,18 @@ exports.initialize = function initialize(mainWindow) {
 };
 
 function useTray(mainWindow) {
-  const tray = new Tray(path.join(__static, 'icons/win/icon.ico'));
+  const tray = new Tray(
+    path.join(__static, `icons/${process.platform === 'win32' ? 'win/icon.ico' : 'png/16x16.png'}`)
+  );
 
   const template = [
     // {label: '退出', role: 'quit'}
+    {
+      label: '显示主页面',
+      click: () => {
+        mainWindow.show();
+      }
+    },
     {
       label: '设置',
       click: () => {
@@ -31,11 +39,19 @@ function useTray(mainWindow) {
   const contextMenu = Menu.buildFromTemplate(template);
   tray.setToolTip('This is my application.');
   tray.setContextMenu(contextMenu);
-  tray.on('click', () => {
-    // 我们这里模拟桌面程序点击通知区图标实现打开关闭应用的功能
-    mainWindow.show();
-    // mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
-    // mainWindow.isVisible() ? mainWindow.setSkipTaskbar(false) : mainWindow.setSkipTaskbar(true);
-  });
+
+  const clickCallBack = () => {
+    if (process.platform === 'darwin') {
+      tray.popUpContextMenu();
+    } else {
+      mainWindow.show();
+    }
+  };
+
+  if (process.platform === 'darwin') {
+    tray.on('mouse-up', clickCallBack);
+  } else {
+    tray.on('click', clickCallBack);
+  }
   return tray;
 }

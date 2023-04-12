@@ -4,7 +4,7 @@ const path = require('path');
 
 useCrypto();
 
-const name = 'ETL';
+const name = 'ELT';
 
 module.exports = defineConfig({
   pages: {
@@ -26,8 +26,11 @@ module.exports = defineConfig({
       builderOptions: {
         // electronDist: 'avr_electron_6.1.12',
         // afterSign: './avr_scripts/after-sign.js',
-        appId: 'com.ffffee.www',
-        icon: path.join(__dirname, 'public/icons/win/icon.ico'),
+        appId: 'com.yourappid.www',
+        icon:
+          process.platform === 'win32' ?
+            path.join(__dirname, 'public/icons/win/icon.ico')
+            : path.join(__dirname, 'public/icons/mac/icon.icns'),
         productName: name,
         // eslint-disable-next-line no-template-curly-in-string
         artifactName: name.toLowerCase() + '-${os}-${version}.${ext}',
@@ -68,7 +71,13 @@ module.exports = defineConfig({
         // asarUnpack：指定 asar 模块的解压设置。
         // asar 是 Electron 用来打包应用程序的一种文件格式，这个选项可以用于指定应用程序中需要解压缩的文件或目录。
         // 这里使用了一个数组，其中包含两个字符串。第一个字符串指定了需要解压缩的所有 .node 文件，第二个字符串指定了需要解压缩的两个目录 sdk 和 public。
-        asarUnpack: ['**\\*.node', 'sdk', 'public'],
+        asarUnpack: [
+          '**\\*.node',
+          'sdk',
+          'public',
+          '**/node_modules/electron/**/*',
+          '**/node_modules/electron/**/*.node'
+        ],
         mac: {
           category: name, // 指定应用程序所属的分类，通常用于在 macOS Dock 中显示应用程序的图标。
           hardenedRuntime: true, // 布尔值，表示是否启用强化的 macOS 运行时保护机制。
