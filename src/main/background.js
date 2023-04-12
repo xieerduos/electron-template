@@ -89,13 +89,13 @@ app.on('ready', async () => {
   ipcMain.handle('dialog:openFile', handleFileOpen);
   createWindow();
   counter.initialize(mainWindow);
-  const sdk = require('@/main/sdk/index.js');
+  // const sdk = require('@/main/sdk/index.js');
   const tray = require('@/main/tray/index.js');
   const settings = require('@/main/settings/index.js');
 
-  if (process.platform === 'win32') {
-    sdk.initialize();
-  }
+  // if (process.platform === 'win32') {
+  //   sdk.initialize();
+  // }
   tray.initialize(mainWindow);
   settings.initialize();
 });
