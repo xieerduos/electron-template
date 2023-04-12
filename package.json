@@ -32,7 +32,8 @@
     "prepare": "husky install",
     "commit": "cz",
     "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -w -r 0 --verbose",
-    "logo": "electron-icon-builder --input=./public/logo.png --output=./public/"
+    "logo": "electron-icon-builder --input=./public/logo.png --output=./public/",
+    "docs": "docsify serve docs"
   },
   "main": "background.js",
   "dependencies": {
