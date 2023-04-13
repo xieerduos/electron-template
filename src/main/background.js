@@ -41,9 +41,9 @@ async function createWindow() {
 
   mainWindow.on('close', (event) => {
     // 关闭窗口 不退出应用
-    event.preventDefault();
-    mainWindow.hide();
-    mainWindow.setSkipTaskbar(true);
+    // event.preventDefault();
+    // mainWindow.hide();
+    // mainWindow.setSkipTaskbar(true);
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
