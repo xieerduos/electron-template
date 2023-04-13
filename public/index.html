@@ -1,20 +1,113 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="zh">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>音频可视化 - Anak.mp3</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: transparent;
+        /* background-color: #222; */
+        -webkit-user-drag: drag;
+        transition: all 1s ease;
+
+      }
+      body:hover {
+        border: 1px solid #141414;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+      svg {
+        /* border: 1px solid #fff; */
+        border: 0;
+      }
+
+      .title-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        -webkit-app-region: drag;
+      }
+    </style>
   </head>
   <body>
-    <noscript>
-      <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please
-        enable it to continue.</strong
-      >
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <svg id="audio-visualizer"></svg>
+    <div class="title-bar"></div>
+
+    <script>
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioElement = new Audio('anak.mp3');
+
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radius = 150;
+
+      const svg = document.getElementById('audio-visualizer');
+      svg.setAttribute('width', width);
+      svg.setAttribute('height', height);
+
+      const sourceNode = audioContext.createMediaElementSource(audioElement);
+      const analyserNode = audioContext.createAnalyser();
+      sourceNode.connect(analyserNode);
+      analyserNode.connect(audioContext.destination);
+
+      analyserNode.fftSize = 256;
+      const bufferLength = analyserNode.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function getColorByIndex(index) {
+        const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+        return colors[index % colors.length];
+      }
+
+      function createLine() {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('stroke-width', 5);
+        return line;
+      }
+
+      const lines = Array.from({length: bufferLength}, createLine);
+      lines.forEach((line) => svg.appendChild(line));
+
+      function renderFrame() {
+        requestAnimationFrame(renderFrame);
+        analyserNode.getByteFrequencyData(dataArray);
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i];
+          const angle = (i / bufferLength) * 2 * Math.PI;
+          const x1 = centerX + Math.cos(angle) * radius;
+          const y1 = centerY + Math.sin(angle) * radius;
+          const x2 = centerX + Math.cos(angle) * (radius + barHeight);
+          const y2 = centerY + Math.sin(angle) * (radius + barHeight);
+
+          const line = lines[i];
+          line.setAttribute('x1', x1);
+          line.setAttribute('y1', y1);
+          line.setAttribute('x2', x2);
+          line.setAttribute('y2', y2);
+          line.setAttribute('stroke', getColorByIndex(i));
+        }
+      }
+
+      audioElement
+        .play()
+        .then(() => {
+          renderFrame();
+        })
+        .catch((error) => {
+          console.error('播放失败:', error);
+        });
+    </script>
   </body>
 </html>

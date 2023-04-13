@@ -20,6 +20,8 @@ async function createWindow() {
     width: 800,
     height: 600,
     autoHideMenuBar: true, // 自动隐藏菜单
+    frame: false,
+    transparent: true,
     // eslint-disable-next-line no-undef
     icon: path.join(__static, `icons/${process.platform === 'win32' ? 'win/icon.ico' : 'png/16x16.png'}`),
     webPreferences: {
@@ -28,7 +30,8 @@ async function createWindow() {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      autoplayPolicy: 'no-user-gesture-required', // 允许自动播放音频和视频
     }
   });
 
