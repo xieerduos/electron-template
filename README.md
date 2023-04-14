@@ -18,6 +18,14 @@ Electron Template 是一个基于 Electron 框架的开源项目模板，它可�
 npm install
 ```
 
+安装过程中遇到问题？
+
+```
+npm install --ignore-engines --legacy-peer-deps
+```
+
+还有问题？ [docs/FrequentlyAskedQuestions.md](docs/FrequentlyAskedQuestions.md)
+
 ### 启动项目
 
 ```
