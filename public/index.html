@@ -14,7 +14,6 @@
         background-color: transparent;
         -webkit-user-drag: drag;
         box-sizing: border-box;
-
       }
       body:hover {
         border: 1px solid #141414;
@@ -35,72 +34,103 @@
     </style>
   </head>
   <body>
+    <!-- 创建一个 SVG 容器，用于显示音频可视化效果 -->
     <svg id="audio-visualizer"></svg>
+
+    <!-- 创建一个可拖拽的标题栏（仅在窗口边缘可见） -->
     <div class="title-bar"></div>
 
     <script>
+      // 使用自执行异步函数，以便在获取音频流时使用 await 关键字
       (async function () {
+        // 创建一个新的音频上下文对象，以便处理音频数据
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-        // 获取系统音频流
+        // 使用 Web API 获取系统音频流（例如麦克风输入）
         const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+        // 将音频流连接到音频上下文的源节点
         const audioSource = audioContext.createMediaStreamSource(stream);
 
+        // 获取当前窗口的宽度和高度，以便正确绘制可视化
         const width = window.innerWidth;
         const height = window.innerHeight;
+        // 计算圆形可视化的中心点
         const centerX = width / 2;
         const centerY = height / 2;
+        // 设置可视化圆的半径
         const radius = 150;
 
+        // 获取 SVG 元素，并设置其宽度和高度
         const svg = document.getElementById('audio-visualizer');
         svg.setAttribute('width', width);
         svg.setAttribute('height', height);
 
+        // 创建分析器节点，用于获取音频数据并进行可视化
         const analyserNode = audioContext.createAnalyser();
+        // 将音频源节点连接到分析器节点
         audioSource.connect(analyserNode);
+        // 将分析器节点连接到音频上下文的输出节点（如果需要播放音频）
         // analyserNode.connect(audioContext.destination);
 
+        // 设置分析器节点的 FFT 大小（控制频率数据的数量）
         analyserNode.fftSize = 256;
+        // 获取分析器节点的频率数据长度
         const bufferLength = analyserNode.frequencyBinCount;
+        // 创建一个无符号字节数组，用于存储频率数据
         const dataArray = new Uint8Array(bufferLength);
 
+        // 根据索引值返回一个颜色字符串（用于绘制线条）
         function getColorByIndex(index) {
           const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
           return colors[index % colors.length];
         }
 
+        // 创建一个 SVG 线条元素，并设置其粗细
         function createLine() {
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
           line.setAttribute('stroke-width', 5);
           return line;
         }
 
+        // 根据缓冲区长度创建一组线条，并将它们添加到 SVG 容器中
         const lines = Array.from({length: bufferLength}, createLine);
         lines.forEach((line) => svg.appendChild(line));
 
+        // 渲染帧的函数，将在每个动画帧上调用
         function renderFrame() {
+          // 使用 requestAnimationFrame 递归调用 renderFrame，实现动画循环
           requestAnimationFrame(renderFrame);
+          // 从分析器节点获取当前时刻的音频频率数据
           analyserNode.getByteFrequencyData(dataArray);
 
+          // 遍历频率数据数组
           for (let i = 0; i < bufferLength; i++) {
+            // 获取当前索引处的条形高度
             const barHeight = dataArray[i];
+            // 计算当前索引处的角度（将圆形分割成等份）
             const angle = (i / bufferLength) * 2 * Math.PI;
+            // 计算圆上点的 x 和 y 坐标
             const x1 = centerX + Math.cos(angle) * radius;
             const y1 = centerY + Math.sin(angle) * radius;
+            // 计算条形的结束点 x 和 y 坐标（从圆上点延伸）
             const x2 = centerX + Math.cos(angle) * (radius + barHeight);
             const y2 = centerY + Math.sin(angle) * (radius + barHeight);
 
+            // 获取当前索引处的 SVG 线条元素
             const line = lines[i];
+            // 设置线条的起点和终点坐标
             line.setAttribute('x1', x1);
             line.setAttribute('y1', y1);
             line.setAttribute('x2', x2);
             line.setAttribute('y2', y2);
+            // 根据索引值设置线条的颜色
             line.setAttribute('stroke', getColorByIndex(i));
           }
         }
 
+        // 开始渲染动画帧
         renderFrame();
-      })();
+      })(); // 结束自执行异步函数
     </script>
   </body>
 </html>
