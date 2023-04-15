@@ -302,3 +302,74 @@ export PYTHON_PATH=/Library/Frameworks/Python.framework/Versions/2.7/bin/python
 ```bash
 source ~/.zshrc
 ```
+
+## Mac 开发环境下底部的图标是默认如何修改
+
+```js
+app.on('ready', async () => {
+  // ...
+  if (process.platform === 'darwin') {
+    // 仅在 macOS 上设置 Dock 图标
+    const iconPath = path.join(__static, 'icons/png/512x512.png');
+    app.dock.setIcon(iconPath);
+  }
+  // ...
+});
+```
+
+## Mac npm run electron:build 报错
+
+```
+     0 valid identities found
+  • building        target=macOS zip arch=x64 file=dist_electron/elt-mac-0.1.1.zip
+  • building        target=DMG arch=x64 file=dist_electron/elt-mac-0.1.1.dmg
+  • building block map  blockMapFile=dist_electron/elt-mac-0.1.1.zip.blockmap
+Error: Exit code: 1. Command failed: /usr/bin/python3 /Users/shaohai.li/project/electron-template/node_modules/dmg-builder/vendor/dmgbuild/core.py
+Traceback (most recent call last):
+  File "/Users/shaohai.li/project/electron-template/node_modules/dmg-builder/vendor/dmgbuild/core.py", line 7, in <module>
+    reload(sys)  # Reload is a hack
+NameError: name 'reload' is not defined
+
+Traceback (most recent call last):
+  File "/Users/shaohai.li/project/electron-template/node_modules/dmg-builder/vendor/dmgbuild/core.py", line 7, in <module>
+    reload(sys)  # Reload is a hack
+NameError: name 'reload' is not defined
+
+    at /Users/shaohai.li/project/electron-template/node_modules/builder-util/src/util.ts:133:18
+    at ChildProcess.exithandler (child_process.js:390:5)
+    at ChildProcess.emit (events.js:400:28)
+    at maybeClose (internal/child_process.js:1088:16)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:296:5)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! electron-template@0.1.1 electron:build: `vue-cli-service electron:build`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the electron-template@0.1.1 electron:build script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /Users/shaohai.li/.npm/_logs/2023-04-15T07_22_17_515Z-debug.log
+```
+
+解决办法：
+
+```bash
+shaohai.li@192 2-electron-video % which python
+/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+
+```
+
+```bash
+vim ~/.zshrc
+```
+
+.zshrc 添加下面内容
+
+```
+export PYTHON_PATH=/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+```
+
+```bash
+source ~/.zshrc
+```

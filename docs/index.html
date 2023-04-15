@@ -1,22 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Electron Template</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="googlebot" content="index,follow" />
+    <meta name="robots" content="index,follow" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="Description" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+    <link rel="icon" href="./logo.png?" />
+    <link id="light-theme" rel="stylesheet" href="./docsify@4/vue.css" />
+    <!-- <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/dark.css" /> -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-size: 16px;
+      }
+
+      html.dark {
+        color-scheme: dark;
+      }
+
+      html.dark .is-dark {
+        display: inline-block;
+        align-items: center;
+      }
+      html.dark .is-light {
+        display: none;
+      }
+      html:not(.dark) .is-dark {
+        display: none;
+      }
+      html:not(.dark) .is-light {
+        display: inline-block;
+      }
+
+      html .is-dark svg,
+      html .is-light svg {
+        vertical-align: text-top;
+      }
+      .markdown-section {
+        /* max-width: 1400px; */
+      }
+      .seo-header {
+        position: absolute;
+        left: 9999999999px;
+      }
+    </style>
   </head>
+
   <body>
+    <h1 class="seo-header">
+      <a href="https://ffffee.com"
+        >前端项目部署实战, 程序员李钟意, 前端开发工程师, electron开发工程师, 在抖音平台直播讲前端相关技术。</a
+      >
+    </h1>
+    <nav>
+      <a href="#/">首页</a>
+      <a href="javascript:;" id="toggle-theme">
+        <span class="is-dark"
+          ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="1.2em" height="1.2em">
+            <path
+              fill="currentColor"
+              d="M13.502 5.414a15.075 15.075 0 0 0 11.594 18.194a11.113 11.113 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1.002 1.002 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.072 13.072 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3Z" />
+          </svg>
+          深色
+        </span>
+        <span class="is-light">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="1.2em" height="1.2em">
+            <path
+              fill="currentColor"
+              d="M16 12.005a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6ZM5.394 6.813L6.81 5.399l3.505 3.506L8.9 10.319zM2 15.005h5v2H2zm3.394 10.193L8.9 21.692l1.414 1.414l-3.505 3.506zM15 25.005h2v5h-2zm6.687-1.9l1.414-1.414l3.506 3.506l-1.414 1.414zm3.313-8.1h5v2h-5zm-3.313-6.101l3.506-3.506l1.414 1.414l-3.506 3.506zM15 2.005h2v5h-2z" />
+          </svg>
+          亮色
+        </span>
+      </a>
+    </nav>
     <div id="app"></div>
     <script>
       window.$docsify = {
-        name: 'Electron Template',
-        repo: 'https://github.com/xieerduos/electron-template',
+        repo: 'https://github.com/xieerduos/xieerduos.github.io',
+        loadSidebar: true,
+        alias: {
+          // 嵌套的侧边栏
+          '/.*/_sidebar.md': '/_sidebar.md'
+        },
+        subMaxLevel: 4,
+        search: {
+          maxAge: 86400000,
+          paths: 'auto',
+          placeholder: '输入关键字搜索',
+          placeholder: {'/en/': 'Type to search', '/': '输入关键字搜索'},
+          noData: {'/en/': 'No Results', '/': '找不到结果'},
+          depth: 6,
+          hideOtherSidebarContent: true,
+          namespace: 'website-1',
+          pathNamespaces: ['/en'],
+          pathNamespaces: /^(\/(en))?(\/(v1|v2))?/
+        },
+        count: {countable: true, fontsize: '0.9em', color: 'rgb(90,90,90)', language: 'chinese'},
+        plugins: [
+          function (hook, vm) {
+            hook.beforeEach(function (html) {
+              var url = 'https://github.com/xieerduos/xieerduos.github.io/blob/main/' + vm.route.file;
+              var editHtml = '[📝 EDIT DOCUMENT](' + url + ')\n';
+
+              return editHtml + html + '\n----\nLast modified {docsify-updated} ' + editHtml;
+            });
+          },
+          function (hook, vm) {
+            hook.ready(function () {
+              mermaid.initialize({startOnLoad: false});
+            });
+            hook.doneEach(function () {
+              mermaid.init(undefined, '.mermaid');
+            });
+          }
+        ],
+        markdown: {
+          renderer: {
+            code: function (code, lang) {
+              var html = '';
+              if (
+                code.match(/^sequenceDiagram/) ||
+                code.match(/^graph/) ||
+                code.match(/^gantt/) ||
+                code.match(/^gitGraph/) ||
+                code.match(/^pie/) ||
+                code.match(/^flowchart/)
+              ) {
+                html = '<div class="mermaid">' + code + '</div>';
+              }
+              var hl = Prism.highlight(code, Prism.languages[lang] || Prism.languages.markup);
+              return (
+                html +
+                (html
+                  ? ''
+                  : '<div class="code-block"><pre v-pre data-lang="' +
+                    lang +
+                    '"><code class="lang-' +
+                    lang +
+                    '">' +
+                    hl +
+                    '</code></pre></div>')
+              );
+            }
+          }
+        }
       };
+      if (/^\/node_modules\//gi.test(window.location.pathname)) {
+        window.location.href = '/';
+      }
+      if (/^\/en/gi.test(window.location.pathname)) {
+        window.location.href = '/';
+      }
     </script>
     <!-- Docsify v4 -->
-    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <script src="./docsify@4/index.js"></script>
+    <!-- 全文检索 -->
+    <script src="./docsify@4/search.min.js"></script>
+    <!-- 图片缩放 - Zoom image -->
+    <script src="./docsify@4/zoom-image.min.js"></script>
+    <!-- 复制到剪贴板 -->
+    <script src="./docsify@4/docsify-copy-code.min.js"></script>
+    <!-- 代码高亮 -->
+    <script src="./docsify@4/prism-bash.min.js"></script>
+    <!-- 时序图 -->
+    <script async src="./docsify@4/mermaid.min.js"></script>
+    <!-- 字数统计 -->
+    <script async src="./docsify@4/countable.min.js"></script>
+    <script type="module">
+      // 监听系统主题变化
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+        const newTheme = event.matches ? 'dark' : 'light';
+        localStorage.removeItem('ColorScheme');
+        applyTheme(newTheme);
+      });
+
+      // 应用默认主题
+      let isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (localStorage.getItem('ColorScheme')) {
+        isDarkTheme = localStorage.getItem('ColorScheme') === 'dark';
+      }
+      applyTheme(isDarkTheme ? 'dark' : 'light');
+
+      window.addEventListener('load', () => {
+        const toggletheme = document.querySelector('#toggle-theme');
+        const lightThemeLink = document.querySelector('#light-theme');
+        const htmlDOM = document.querySelector('html');
+
+        toggletheme.addEventListener('click', () => {
+          const darkThemeLink = document.querySelector('#dark-theme');
+          const colorScheme = darkThemeLink ? 'light' : 'dark';
+          localStorage.setItem('ColorScheme', colorScheme);
+          applyTheme(colorScheme);
+        });
+      });
+
+      // 应用主题
+      function applyTheme(theme) {
+        const lightThemeLink = document.querySelector('#light-theme');
+        const darkThemeLink = document.querySelector('#dark-theme');
+        const htmlDOM = document.querySelector('html');
+
+        if (theme === 'dark') {
+          // 应用暗黑模式
+          if (!darkThemeLink) {
+            const newLink = '<link id="dark-theme" rel="stylesheet" href="./docsify@4/dark-vue.css" />';
+            lightThemeLink.insertAdjacentHTML('afterend', newLink);
+          }
+          htmlDOM && htmlDOM.classList.add('dark');
+        } else {
+          // 应用亮色模式
+          if (darkThemeLink) {
+            darkThemeLink.remove();
+          }
+          htmlDOM && htmlDOM.classList.remove('dark');
+        }
+      }
+    </script>
   </body>
 </html>

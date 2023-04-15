@@ -60,6 +60,8 @@ https://www.npmjs.com/package/electron-icon-builder
 npm run logo
 ```
 
+Electron Mac 系统托盘图标失真问题[electron-mac-tray-icon-distortion.md](docs/electron-mac-tray-icon-distortion.md)
+
 ## 常见问题
 
 遇到问题了？可以先看看这里[docs/FrequentlyAskedQuestions.md](docs/FrequentlyAskedQuestions.md)有没有答案
