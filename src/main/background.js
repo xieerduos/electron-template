@@ -16,6 +16,8 @@ const windowManager = {
   mainWindow: null
 };
 
+let isQuitting = false;
+
 // let mainWindow;
 async function createWindow() {
   // Create the browser window.
@@ -40,10 +42,13 @@ async function createWindow() {
   });
 
   windowManager.mainWindow.on('close', (event) => {
-    // 关闭窗口 不退出应用
-    event.preventDefault();
-    windowManager.mainWindow.hide();
-    // mainWindow.setSkipTaskbar(true);
+    if (!isQuitting) {
+      // 关闭窗口 不退出应用
+      event.preventDefault();
+      windowManager.mainWindow.hide();
+      // mainWindow.setSkipTaskbar(true);
+    }
+    // 如果 isQuitting 为 true，则允许窗口关闭，从而使应用退出
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -56,6 +61,10 @@ async function createWindow() {
     windowManager.mainWindow.loadURL('app://./index.html');
   }
 }
+
+app.on('before-quit', () => {
+  isQuitting = true;
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
