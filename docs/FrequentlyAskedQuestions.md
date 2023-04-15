@@ -227,3 +227,78 @@ function useTray(mainWindow) {
   return tray;
 }
 ```
+
+## Mac python 版本问题
+
+```bash
+shaohai.li@192 2-electron-video % python3 --version
+Python 3.9.6
+shaohai.li@192 2-electron-video % python --version
+Python 2.7.18
+```
+
+把 python 执行改为 python3
+
+```
+alias python='python3'
+```
+
+取消别名
+
+```bash
+unalias python
+```
+
+---
+
+Error: Exit code: ENOENT. spawn /usr/bin/python ENOENT
+
+```
+ • default Electron icon is used  reason=application icon is not set
+  • skipped macOS application code signing  reason=cannot find valid "Developer ID Application" identity or custom non-Apple code signing certificate, it could cause some undefined behaviour, e.g. macOS localized description not visible, see https://electron.build/code-signing allIdentities=     0 identities found
+                                                Valid identities only
+     0 valid identities found
+  • building        target=macOS zip arch=x64 file=dist_electron/2-electron-video-0.1.0-mac.zip
+  • building        target=DMG arch=x64 file=dist_electron/2-electron-video-0.1.0.dmg
+  • building block map  blockMapFile=dist_electron/2-electron-video-0.1.0-mac.zip.blockmap
+Error: Exit code: ENOENT. spawn /usr/bin/python ENOENT
+    at /Users/shaohai.li/project/electron/2-electron-video/node_modules/builder-util/src/util.ts:133:18
+    at exithandler (child_process.js:390:5)
+    at ChildProcess.errorhandler (child_process.js:402:5)
+    at ChildProcess.emit (events.js:400:28)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:283:12)
+    at onErrorNT (internal/child_process.js:472:16)
+    at processTicksAndRejections (internal/process/task_queues.js:82:21)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! 2-electron-video@0.1.0 electron:build: `vue-cli-service electron:build`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the 2-electron-video@0.1.0 electron:build script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /Users/shaohai.li/.npm/_logs/2023-04-02T04_13_58_391Z-debug.log
+```
+
+解决办法：
+
+```bash
+shaohai.li@192 2-electron-video % which python
+/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+
+```
+
+```bash
+vim ~/.zshrc
+```
+
+.zshrc 添加下面内容
+
+```
+export PYTHON_PATH=/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+```
+
+```bash
+source ~/.zshrc
+```
