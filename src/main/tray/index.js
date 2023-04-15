@@ -1,22 +1,28 @@
-const {app, Menu, Tray, ipcMain} = require('electron');
+const {app, Menu, Tray, ipcMain, nativeImage, screen} = require('electron');
 const path = require('path');
 let tray = null;
 
-exports.initialize = function initialize(mainWindow) {
-  tray = useTray(mainWindow);
+exports.initialize = function initialize(windowManager) {
+  tray = useTray(windowManager);
 };
 
-function useTray(mainWindow) {
-  const tray = new Tray(
-    path.join(__static, `icons/${process.platform === 'win32' ? 'win/icon.ico' : 'png/16x16.png'}`)
-  );
+function useTray(windowManager) {
+  const iconPath = process.platform === 'win32' ? 'win/icon.ico' : 'png/icon.png';
+
+  const tray = new Tray(path.join(__static, `icons/${iconPath}`));
+
+  // const tray = new Tray(
+  //   path.join(__static, `icons/${process.platform === 'win32' ? 'win/icon.ico' : 'png/32x32.png'}`)
+  // );
 
   const template = [
     // {label: '退出', role: 'quit'}
     {
       label: '显示主页面',
       click: () => {
-        mainWindow.show();
+        if (windowManager.mainWindow && !windowManager.mainWindow.isDestroyed()) {
+          windowManager.mainWindow.show();
+        }
       }
     },
     {
@@ -28,8 +34,10 @@ function useTray(mainWindow) {
     {
       label: '退出',
       click: () => {
-        // 1. 销毁主窗口
-        mainWindow.destroy();
+        if (windowManager.mainWindow && !windowManager.mainWindow.isDestroyed()) {
+          // 1. 销毁主窗口
+          windowManager.mainWindow.destroy();
+        }
         // 2. 退出应用
         app.quit();
       }
@@ -44,7 +52,9 @@ function useTray(mainWindow) {
     if (process.platform === 'darwin') {
       tray.popUpContextMenu();
     } else {
-      mainWindow.show();
+      if (windowManager.mainWindow && !windowManager.mainWindow.isDestroyed()) {
+        windowManager.mainWindow.show();
+      }
     }
   };
 

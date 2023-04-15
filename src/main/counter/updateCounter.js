@@ -1,9 +1,10 @@
 import {app, Menu} from 'electron';
 
 export default function updateCounter(mainWindow) {
-  setInterval(() => {
-    mainWindow.webContents.send('update-counter', 1);
-  }, 3000);
+  // setInterval(() => {
+    
+  //   mainWindow.webContents.send('update-counter', 1);
+  // }, 3000);
   //   const menu = Menu.buildFromTemplate([
   //     {
   //       label: app.name,
