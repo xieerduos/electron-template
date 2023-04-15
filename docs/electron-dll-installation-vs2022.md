@@ -9,11 +9,11 @@
 
 2. 安装 Visual Studio 2022
 
-   ![1_vs_install.png](../images/electron/1_vs_install.png)
+   ![1_vs_install.png](./assets/1_vs_install.png)
 
 3. 工作负荷 - 勾选 ✔`Node.js 开发` 和 `使用C++的桌面开发`
 
-   ![2_nodejs_c++_component.jpg](../images/electron/2_nodejs_c++_component.jpg)
+   ![2_nodejs_c++_component.jpg](./assets/2_nodejs_c++_component.jpg)
 
 ## 二、安装 Node.js 环境
 
