@@ -38,3 +38,4 @@ docs/docsify@4
 #Electron-builder output
 /dist_electron
 
+/vue_devtools

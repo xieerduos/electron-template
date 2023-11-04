@@ -34,3 +34,4 @@ coverage
 .nojekyll
 #Electron-builder output
 /dist_electron
+/vue_devtools

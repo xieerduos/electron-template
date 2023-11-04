@@ -1,8 +1,7 @@
 'use strict';
 
-import {app, protocol, ipcMain, BrowserWindow, nativeImage} from 'electron';
+import {app, protocol, ipcMain, session} from 'electron';
 import {createProtocol} from 'vue-cli-plugin-electron-builder/lib';
-import installExtension, {VUEJS3_DEVTOOLS} from 'electron-devtools-installer';
 import path from 'path';
 import {handleSetTitle} from '@/main/utils/setTitle.js';
 import {handleFileOpen} from '@/main/utils/openDialog.js';
@@ -42,16 +41,15 @@ app.on('ready', async () => {
   createProtocol('app');
 
   if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    try {
-      // await installExtension(VUEJS3_DEVTOOLS);
-      await installExtension({
-        id: 'ljjemllljcmogpfapbkkighbhhppjdbg', // Vue Devtools beta
-        electron: '>=1.2.1'
+    const extensionFolder = path.join(__static, '../vue_devtools/');
+    session.defaultSession
+      .loadExtension(extensionFolder)
+      .then((res) => {
+        // console.log('[vue_devtools res]', res);
+      })
+      .catch((err) => {
+        console.error('[vue_devtools err]', err);
       });
-    } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString());
-    }
   }
   ipcMain.on('set-title', handleSetTitle);
   ipcMain.handle('dialog:openFile', handleFileOpen);
