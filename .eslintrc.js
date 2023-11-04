@@ -130,16 +130,7 @@ module.exports = {
     'no-var': 1, // 尽量使用 let 或 const，不使用 var
     eqeqeq: ['error', 'smart'], // 使用严格相等运算符（===）或不严格相等运算符（==）的情况下需要进行类型转换时可以使用 ==，例如将字符串转为数字
     semi: [1, 'always'], // 语句末尾必须加分号，但可以使用 ASI 自动插入分号
-    'operator-linebreak': [
-      // 在操作符前换行，除非操作符位于行末或者下一行开头
-      2,
-      'before',
-      {
-        overrides: {
-          '?': 'after'
-        }
-      }
-    ],
+    'operator-linebreak': 'off',
     'no-debugger': 2, // 禁止使用 debugger
     quotes: [1, 'single'] // 字符串必须使用单引号
   }

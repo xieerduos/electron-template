@@ -29,12 +29,11 @@ module.exports = defineConfig({
         appId: 'com.yourappid.www',
         icon:
           process.platform === 'win32'
-          // eslint-disable-next-line
             ? path.join(__dirname, 'public/icons/win/icon.ico')
             : path.join(__dirname, 'public/icons/mac/icon.icns'),
         productName: name,
         // eslint-disable-next-line no-template-curly-in-string
-        artifactName: name.toLowerCase() + '-${os}-${version}.${ext}',
+        artifactName: name.toLowerCase() + '-${os}-${arch}-${version}.${ext}',
         copyright: 'Copyright © 2023 李钟意 All rights reserved.',
         directories: {
           // output: "./dist_electron/${platform}/${arch}/"
@@ -72,14 +71,17 @@ module.exports = defineConfig({
         // asarUnpack：指定 asar 模块的解压设置。
         // asar 是 Electron 用来打包应用程序的一种文件格式，这个选项可以用于指定应用程序中需要解压缩的文件或目录。
         // 这里使用了一个数组，其中包含两个字符串。第一个字符串指定了需要解压缩的所有 .node 文件，第二个字符串指定了需要解压缩的两个目录 sdk 和 public。
-        asarUnpack: [
-          '**\\*.node',
-          'sdk',
-          'public',
-          '**/node_modules/electron/**/*',
-          '**/node_modules/electron/**/*.node'
-        ],
+        asarUnpack: [],
         mac: {
+          // https://github.com/electron-userland/electron-builder/issues/5689
+          target: {
+            target: 'default',
+            // arch: ['universal']
+            // arch: ['arm64']
+            // arch: ['x64']
+            arch: process.env.VUE_APP_PACK_ARCH
+          },
+          // mergeASARs: false, // https://github.com/isaacs/minimatch/issues/173
           category: name, // 指定应用程序所属的分类，通常用于在 macOS Dock 中显示应用程序的图标。
           hardenedRuntime: true, // 布尔值，表示是否启用强化的 macOS 运行时保护机制。
           extendInfo: {
@@ -96,7 +98,6 @@ module.exports = defineConfig({
         settingsWindow: 'src/main/preload/settings.js'
       },
       chainWebpackMainProcess: (config) => {
-        // Set up Babel loader for JS files
         config.module.rule('babel').test(/\.js$/).use('babel-loader').loader('babel-loader').end();
       },
       nodeIntegration: false,
