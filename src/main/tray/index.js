@@ -1,28 +1,24 @@
 const {app, Menu, Tray, ipcMain, nativeImage, screen} = require('electron');
 const path = require('path');
+const {getMainWindow} = require('@/main/windows/mainWindow.js');
 let tray = null;
 
-exports.initialize = function initialize(windowManager) {
-  tray = useTray(windowManager);
+exports.initialize = function initialize() {
+  tray = useTray();
 };
 
-function useTray(windowManager) {
+function useTray() {
   const iconPath = process.platform === 'win32' ? 'win/icon.ico' : 'png/icon.png';
 
   const tray = new Tray(path.join(__static, `icons/${iconPath}`));
-
-  // const tray = new Tray(
-  //   path.join(__static, `icons/${process.platform === 'win32' ? 'win/icon.ico' : 'png/32x32.png'}`)
-  // );
 
   const template = [
     // {label: '退出', role: 'quit'}
     {
       label: '显示主页面',
       click: () => {
-        if (windowManager.mainWindow && !windowManager.mainWindow.isDestroyed()) {
-          windowManager.mainWindow.show();
-        }
+        const mainWindow = getMainWindow({createIfNotFound: true});
+        mainWindow.show();
       }
     },
     {
@@ -34,9 +30,10 @@ function useTray(windowManager) {
     {
       label: '退出',
       click: () => {
-        if (windowManager.mainWindow && !windowManager.mainWindow.isDestroyed()) {
+        const mainWindow = getMainWindow({createIfNotFound: false});
+        if (mainWindow && mainWindow.isDestroyed()) {
           // 1. 销毁主窗口
-          windowManager.mainWindow.destroy();
+          mainWindow.destroy();
         }
         // 2. 退出应用
         app.quit();
@@ -52,9 +49,8 @@ function useTray(windowManager) {
     if (process.platform === 'darwin') {
       tray.popUpContextMenu();
     } else {
-      if (windowManager.mainWindow && !windowManager.mainWindow.isDestroyed()) {
-        windowManager.mainWindow.show();
-      }
+      const mainWindow = getMainWindow({createIfNotFound: true});
+      mainWindow.show();
     }
   };
 
