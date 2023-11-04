@@ -28,8 +28,9 @@ module.exports = defineConfig({
         // afterSign: './avr_scripts/after-sign.js',
         appId: 'com.yourappid.www',
         icon:
-          process.platform === 'win32' ?
-            path.join(__dirname, 'public/icons/win/icon.ico')
+          process.platform === 'win32'
+          // eslint-disable-next-line
+            ? path.join(__dirname, 'public/icons/win/icon.ico')
             : path.join(__dirname, 'public/icons/mac/icon.icns'),
         productName: name,
         // eslint-disable-next-line no-template-curly-in-string
@@ -93,6 +94,10 @@ module.exports = defineConfig({
       preload: {
         mainWindow: 'src/main/preload/index.js',
         settingsWindow: 'src/main/preload/settings.js'
+      },
+      chainWebpackMainProcess: (config) => {
+        // Set up Babel loader for JS files
+        config.module.rule('babel').test(/\.js$/).use('babel-loader').loader('babel-loader').end();
       },
       nodeIntegration: false,
       externals: ['ffi-napi', 'ref-napi'],
