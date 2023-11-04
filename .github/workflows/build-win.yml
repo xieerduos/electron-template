@@ -1,0 +1,46 @@
+name: Build and Release for Windows
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Get Python Path
+        run: |
+          echo "PYTHON_PATH=$(where python | select -first 1)" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+          echo "Python Path: $env:PYTHON_PATH"
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run electron:build
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist_electron/*.exe
+            dist_electron/*.msi
+            dist_electron/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.ELECTRON_TEMPLATE_TOKEN }}

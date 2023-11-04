@@ -1,0 +1,44 @@
+name: Build and Release for MacOS
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 2.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: 2.x
+
+      - name: Get Python Path
+        run: |
+          echo "PYTHON_PATH=$(which python2)" >> $GITHUB_ENV
+          echo "Python Path: $PYTHON_PATH"
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build:mac
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist_electron/*.dmg
+            dist_electron/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.ELECTRON_TEMPLATE_TOKEN }}
