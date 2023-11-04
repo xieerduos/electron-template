@@ -39,9 +39,9 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "electron-log": "^4.4.8",
-    "vue": "^3.2.13",
-    "vue-router": "^4.0.3",
-    "vuex": "^4.0.0"
+    "pinia": "^2.1.7",
+    "vue": "^3.3.7",
+    "vue-router": "^4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -56,7 +56,7 @@
     "@vue/eslint-config-standard": "^8.0.1",
     "commitizen": "^4.3.0",
     "conventional-changelog-cli": "^2.2.2",
-    "electron": "^24.2.0",
+    "electron": "^27.0.3",
     "electron-devtools-installer": "^3.1.0",
     "electron-icon-builder": "^2.0.1",
     "eslint": "^8.37.0",
