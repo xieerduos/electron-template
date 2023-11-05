@@ -27,10 +27,10 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 17
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --ignore-engines --legacy-peer-deps
 
       - name: Build
         run: npm run electron:build
