@@ -11,6 +11,12 @@ module.exports = {
     __static: true
   },
   rules: {
+    'vue/multi-word-component-names': [
+      'error',
+      {
+        ignores: ['Navbar']
+      }
+    ],
     // 指定规则
     'vue/no-parsing-error': [
       // 禁止Vue.js错误
